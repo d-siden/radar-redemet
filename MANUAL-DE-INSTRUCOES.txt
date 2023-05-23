@@ -1,0 +1,75 @@
+-------------------------------------------------------------------------------------
+MANUAL DE INSTRUÇÕES
+
+A execução perfeita do programa consiste em:
+ 1 Executar o arquivo .R
+ 2 Responder o que ele pedir
+ 3 Aguardar a mensagem "Fim"
+ 4 Abrir a pasta resultados e conferir as imagens
+
+DO QUE VOCÊ PRECISA?
+
+- R (VERSÃO 4.3, 4.2 OU 4.1)
+-SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
+--cole a chave em chave.txt e salve
+
+(opcional):
+-PONTOS PARA DESTACAR NA IMAGEM 
+--informe latitude, longitude e nome dos pontos em pontos.csv e salve
+[ . decimal e , separador!!!]
+
++ O QUE JÁ É FORNECIDO COM O SCRIPT:
+- SHAPEFILE DOS ESTADOS DO BRASIL (créditos: http://www.dpi.inpe.br/Ambdata/unidades_administrativas.php)
+- LEGENDA DE REFLETIVIDADE (printei do redemet)
+
+O QUE ELE RETORNA?
+-CADA IMAGEM DENTRO DO PERÍODO FORNECIDO EM FORMATO .png, OU
+-(01) UM .gif, SE FOI SOLICITADO MAIS DE UM HORÁRIO DE VARREDURA,
+-SERÃO SALVOS NA PASTA "resultados".
+
+PARA ISSO É NECESSÁRIO QUE OS ARQUIVOS ESTEJAM DISPOSTOS NA SEGUINTE HIERARQUIA:
+
+[materia-prima]
+	-> shapefile(EstadosBR_IBGE_LLWGS84.dbf + .prj + .shp + .shx)
+	-> legenda(.png)
+	-> pontos(.csv)
+	-> chave(.txt)
+	-> redemet-radar-win(.R)
+	-> [temporarios]
+		-> (.png)
+	-> [resultados]
+		-> (.png, .gif)
+
+-------------------------------------------------------------------------------------
+
+PROBLEMAS CONHECIDOS NA VERSÃO 1:
+- NORMALMENTE MENOS DA METADE DOS HORÁRIOS SOLICITADOS É RETORNADA;
+- DEMORA PARA FORMAR A ANIMAÇÃO;
+- AINDA NÃO FAZ LIMPEZA AUTOMÁTICA DA PASTA 'TEMPORÁRIOS';
+- EXECUÇÃO MUITO VERBOSA (?) (E TA ERRADO?);
+- TAMANHO DAS BORDAS DO PLOT VARIA POR RAZÕES QUE EU DESCONHEÇO.
+
+RESOLVIDOS:
+- DOIS-PONTOS NO NOME DA IMAGEM PODEM TRAVAR ALGUNS SISTEMAS DE ARQUIVOS (SMARTPHONES ANDROID, WINDOWS); {resolvido em 2023 oh demora}
+
+-------------------------------------------------------------------------------------
+
+COMO ELE FUNCIONA?
+
+FAZ O DOWNLOAD DA(S) IMAGEM(NS) CORRESPONDENTE(S) AO LOCAL DESEJADO NA PASTA "temporarios";
+
+PLOTA ESSA IMAGEM POR CIMA DO SHAPEFILE CONTENDO AS DIVISAS DOS ESTADOS DO BRASIL "EstadosBR_IBGE_LLWGS84";
+
+PLOTA A LEGENDA DE REFLETIVIDADE DISPONÍVEL DO SITE EM MAIO DE 2022 "legenda_dBz.png";
+
+SALVA CADA IMAGEM INDIVIDUALMENTE, + (01) UM .gif SE FOI SOLICITADO MAIS DE UM HORÁRIO DE VARREDURA, NA PASTA "resultados".
+
+-------------------------------------------------------------------------------------
+
+Primeira rodada:
+
+Quinta-feira, 26 de maio de 2022
+
+Danilo Siden
+
+-------------------------------------------------------------------------------------
