@@ -8,12 +8,12 @@ A execução perfeita do programa consiste em:
  4 Abrir a pasta resultados e conferir as imagens
 
 DO QUE VOCÊ PRECISA?
-
 - R (VERSÃO 4.3, 4.2 OU 4.1)
 -SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
 --cole a chave em chave.txt e salve
 
 (opcional):
+-editar o script na linha 8 conforme manda a linha 7, para agilizar
 -PONTOS PARA DESTACAR NA IMAGEM 
 --informe latitude, longitude e nome dos pontos em pontos.csv e salve
 [ . decimal e , separador!!!]
