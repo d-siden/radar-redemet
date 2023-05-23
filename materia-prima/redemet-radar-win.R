@@ -4,13 +4,13 @@
 # feito com carinho por Danilo Siden
 # Maio de 2022
 
-setwd("~/Documentos/R/pasta-radar/materia-prima")
+# informe abaixo uma pasta de trabalho permanente e descomente a linha:
+#setwd("C:/.../materia-prima")
 
 rm(list = ls())
 
-marcar.pontos <- TRUE
-
 ################################################################################
+marcar.pontos <- TRUE
 
 pacotes_necessarios <- c("rjson", "httr", "ggplot2", "grid", "rgdal", "png", "magick")
 for(i in pacotes_necessarios){
@@ -53,7 +53,7 @@ largura <- 8
 altura <- 8
 
 chave <- readLines("chave-redemet.txt")
-if(length(chave)==0){stop("Verifique o arquivo chave.txt")}
+if(length(chave)==0){stop("\n\n\tVerifique o arquivo chave-redemet.txt\n\n")}
 
 cat("Produtos CAPPI: 03km, 05km, 07km, 10km, maxcappi")
 lista.produtos <- c('03km', '05km', '07km', '10km', 'maxcappi')
