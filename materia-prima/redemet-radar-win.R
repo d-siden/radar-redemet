@@ -10,7 +10,6 @@
 rm(list = ls())
 
 ################################################################################
-marcar.pontos <- TRUE
 
 pacotes_necessarios <- c("rjson", "httr", "ggplot2", "grid", "rgdal", "png", "magick")
 for(i in pacotes_necessarios){
@@ -39,7 +38,7 @@ while(strsplit(getwd(), split = "/")[[1]][length(strsplit(getwd(), split = "/")[
 }
 
 # Importar os shapefiles e imagens necessárias
-if(marcar.pontos){pontos <- read.csv("pontos.csv")}
+pontos <- read.csv("pontos.csv")
 #EstadosBR <- read_sf(dsn = sprintf("%s/", getwd()), layer ="EstadosBR_IBGE_LLWGS84.shp")
 EstadosBR <- rgdal::readOGR(dsn = sprintf("%s/EstadosBR_IBGE_LLWGS84.shp", getwd()),verbose = F)
 #aeroneb <- read_sf(dsn = sprintf("%s", getwd()), layer ="aeroneb")
@@ -53,7 +52,7 @@ largura <- 8
 altura <- 8
 
 chave <- readLines("chave-redemet.txt")
-if(length(chave)==0){stop("\n\n\tVerifique o arquivo chave-redemet.txt\n\n")}
+if(length(chave)==0||nchar(chave)==0){stop("\n\n\tVerifique sua chave em chave-redemet.txt\n\n")}
 
 cat("Produtos CAPPI: 03km, 05km, 07km, 10km, maxcappi")
 lista.produtos <- c('03km', '05km', '07km', '10km', 'maxcappi')
@@ -71,7 +70,7 @@ lista.radares <- data.frame("codigo" = c('al', 'be', 'bv', 'cn', 'cz', 'ga', 'jr
                             "local" = c('Almenara/MG', 'Belem/PA', 'Boa Vista/RR', 'Cangucu/RS', 'Cruzeiro do Sul/AC', 'Gama/DF', 'Jaraguari/MS', 'Macapa/AP',
                                         'Maceio/AL', 'Manaus/AM', 'Morro da Igreja/SC', 'Natal/RN', 'Petrolina/PE', 'Pico do Couto/RJ', 'Porto Velho/RO',
                                         'Salvador/BA', 'Santarem/PA', 'Santa Teresa/ES', 'Santiago/RS', 'Sao Francisco/MG', 'Sao Gabriel da Cachoeira/AM',
-                                        'Sao Lu?s/MA', 'Sao Roque/SP', 'Tabatinga/AM', 'Tefe/AM', 'Tres Marias/MG'))
+                                        'Sao Luis/MA', 'Sao Roque/SP', 'Tabatinga/AM', 'Tefe/AM', 'Tres Marias/MG'))
 repeat{
   radar <- readline("-> ")
   if(radar %in% lista.radares$codigo)
@@ -285,7 +284,7 @@ if(animar==1){ # plot de imagem estática
              x=lon.cent+raio/111*cos(seq(0,2*pi,length.out=100)),
              y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
              colour = "gray",
-             size = 0.5
+             linewidth = 0.5
     )+
     # cruz do radar
     geom_point(data=as.data.frame(1),
@@ -301,20 +300,16 @@ if(animar==1){ # plot de imagem estática
               #color = "gray15",
               linewidth = 0.5
     )+
-    {
-      if(marcar.pontos){
-        geom_point(data = pontos,
-                   aes(x=lon, y=lat),
-                   size = 1,
-                   shape = 1)}
-    }+
-    {
-      if(marcar.pontos){
-        geom_text(data = pontos,
-                  aes(x=lon, y = lat, label = nome),
-                  size = 2,
-                  vjust = -0.5)}
-    }+
+    geom_point(data = pontos,
+               aes(x=lon, y=lat),
+               size = 1,
+               shape = 1
+    )+
+    geom_text(data = pontos,
+              aes(x=lon, y = lat, label = nome),
+              size = 2,
+              vjust = -0.5
+    )+
     # imagem dos ecos:
     #carregamento dos endereços do dataframe e conversão dos pngs
     annotation_custom(imagemradar,
@@ -393,7 +388,7 @@ if(animar==1){ # plot de imagem estática
                x=lon.cent+raio/111*cos(seq(0,2*pi,length.out=100)),
                y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
                colour = "gray",
-               size = 0.5
+               linewidth = 0.5
       )+
       # cruz do radar
       geom_point(data=as.data.frame(1),
@@ -409,20 +404,16 @@ if(animar==1){ # plot de imagem estática
                 #color = "gray15",
                 linewidth = 0.5
       )+
-      {
-        if(marcar.pontos){
-          geom_point(data = pontos,
-                     aes(x=lon, y=lat),
-                     size = 1,
-                     shape = 1)}
-      }+
-      {
-        if(marcar.pontos){
-          geom_text(data = pontos,
+      geom_point(data = pontos,
+                 aes(x=lon, y=lat),
+                 size = 1,
+                 shape = 1
+      )+
+      geom_text(data = pontos,
                     aes(x=lon, y = lat, label = nome),
                     size = 2,
-                    vjust = -0.5)}
-      }+
+                    vjust = -0.5
+      )+
       # imagem dos ecos:
       annotation_custom(rasterGrob(readPNG(eco.frame$png[A])),
                         xmin = long.min,
