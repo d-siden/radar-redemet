@@ -4,6 +4,9 @@
 # feito com carinho por Danilo Siden
 # Maio de 2022
 
+# nova versão de 2023: substitui o pacote aposentado rgdal
+# pelo seu sucessor, sf
+
 # informe abaixo uma pasta de trabalho permanente e descomente a linha:
 #setwd("C:/.../materia-prima")
 
@@ -11,18 +14,17 @@ rm(list = ls())
 
 ################################################################################
 
-pacotes_necessarios <- c("rjson", "httr", "ggplot2", "grid", "rgdal", "png", "magick")
+pacotes_necessarios <- c("rjson", "httr", "ggplot2", "grid", "sf", "png", "magick")
 for(i in pacotes_necessarios){
     if (!(i %in% installed.packages())){
       print(sprintf("Pacote '%s' nao encontrado. Instalando pacote...",i))
       install.packages(i, dependencies = NA)
     }
-    if(i=="rgdal"){
-      options("rgdal_show_exportToProj4_warnings"="none")
-      library(rgdal, include.only = 'readOGR', verbose = F, warn.conflicts = T, quietly = T)
+   if(i=="sf"){
+      library(sf, include.only = 'read_sf', verbose = F, warn.conflicts = T, quietly = T)
       }else{
         library(i, character.only = TRUE)
-    }
+      }
   }
 if(!(sum(pacotes_necessarios %in% (.packages()))==length(pacotes_necessarios))){
     aviso <- sprintf("O pacote '%s' nao foi carregado.", pacotes_necessarios[i])
@@ -39,9 +41,7 @@ while(strsplit(getwd(), split = "/")[[1]][length(strsplit(getwd(), split = "/")[
 
 # Importar os shapefiles e imagens necessárias
 pontos <- read.csv("pontos.csv")
-#EstadosBR <- read_sf(dsn = sprintf("%s/", getwd()), layer ="EstadosBR_IBGE_LLWGS84.shp")
-EstadosBR <- rgdal::readOGR(dsn = sprintf("%s/EstadosBR_IBGE_LLWGS84.shp", getwd()),verbose = F)
-#aeroneb <- read_sf(dsn = sprintf("%s", getwd()), layer ="aeroneb")
+EstadosBR <- read_sf(dsn = sprintf("%s/EstadosBR_IBGE_LLWGS84.shp", getwd()))
 legenda <- sprintf("%s/legenda_dBz.png", getwd())
 # Ler os pngs e transformar em grobs
 legenda <- readPNG(source = legenda)
@@ -294,11 +294,12 @@ if(animar==1){ # plot de imagem estática
                shape = 3,
                color = 'gray'
     )+
-    geom_path(data = EstadosBR,
-              aes(x=long, y=lat, group = group),
+    geom_sf(data = EstadosBR,
+            fill = NA,
+              #aes(x=long, y=lat, group = group),
               #alpha = 0.5,
               #color = "gray15",
-              linewidth = 0.5
+              size = 0.5
     )+
     geom_point(data = pontos,
                aes(x=lon, y=lat),
@@ -336,10 +337,11 @@ if(animar==1){ # plot de imagem estática
                           ymax = lat.min+0.45)
       }
     }+
-    coord_fixed(ratio = 1,
-                xlim = c(long.min, long.max),
-                ylim = c(lat.min, lat.max),
-                clip = "on"
+    coord_sf(xlim = c(long.min, long.max),
+             ylim = c(lat.min, lat.max),
+             clip = "on",
+             crs = sf::st_crs(4326),
+             expand = TRUE
     )+
     scale_x_continuous(breaks = seq(floor(long.min), ceiling(long.max), 1))+
     scale_y_continuous(breaks = seq(floor(lat.min), ceiling(lat.max), 1))+
@@ -398,11 +400,12 @@ if(animar==1){ # plot de imagem estática
                  shape = 3,
                  color = 'gray'
       )+
-      geom_path(data = EstadosBR,
-                aes(x=long, y=lat, group = group),
+      geom_sf(data = EstadosBR,
+              fill = NA,
+                #aes(x=long, y=lat, group = group),
                 #alpha = 0.5,
                 #color = "gray15",
-                linewidth = 0.5
+                size = 0.5
       )+
       geom_point(data = pontos,
                  aes(x=lon, y=lat),
@@ -438,10 +441,11 @@ if(animar==1){ # plot de imagem estática
                             ymax = lat.min+0.45)
         }
       }+
-      coord_fixed(ratio = 1,
-                  xlim = c(long.min, long.max),
-                  ylim = c(lat.min, lat.max),
-                  clip = "on"
+      coord_sf(xlim = c(long.min, long.max),
+               ylim = c(lat.min, lat.max),
+               clip = "on",
+               crs = sf::st_crs(4326),
+               expand = TRUE
       )+
       scale_x_continuous(breaks = seq(floor(long.min), ceiling(long.max), 1))+
       scale_y_continuous(breaks = seq(floor(lat.min), ceiling(lat.max), 1))+
