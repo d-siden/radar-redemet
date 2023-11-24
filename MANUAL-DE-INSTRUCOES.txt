@@ -2,7 +2,7 @@
 MANUAL DE INSTRUÇÕES
 
 A execução perfeita do programa consiste em:
- 1 Executar o arquivo .R
+ 1 Executar o arquivo redemer-radar-win.R
  2 Responder o que ele pedir
  3 Aguardar a mensagem "Fim"
  4 Abrir a pasta resultados e conferir as imagens
@@ -11,16 +11,7 @@ DO QUE VOCÊ PRECISA?
 - R (VERSÃO 4.3, 4.2 OU 4.1)
 -SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
 --cole a chave em chave-redemet.txt e salve
-
-(opcional):
--editar o script na linha 8 conforme manda a linha 7, para agilizar
--PONTOS PARA DESTACAR NA IMAGEM 
---informe latitude, longitude e nome dos pontos em pontos.csv e salve
-[ . decimal e , separador!!!]
-
-+ O QUE JÁ É FORNECIDO COM O SCRIPT:
-- SHAPEFILE DOS ESTADOS DO BRASIL (créditos: http://www.dpi.inpe.br/Ambdata/unidades_administrativas.php)
-- LEGENDA DE REFLETIVIDADE (printei do redemet)
+-editar apenas a linha 9 com o caminho da pasta "materia-prima"
 
 O QUE ELE RETORNA?
 -CADA IMAGEM DENTRO DO PERÍODO FORNECIDO EM FORMATO .png, OU
@@ -40,10 +31,19 @@ PARA ISSO É NECESSÁRIO QUE OS ARQUIVOS ESTEJAM DISPOSTOS NA SEGUINTE HIERARQUI
 	-> [resultados]
 		-> (.png, .gif)
 
+(opcional):
+-LOCAIS PARA DESTACAR NA IMAGEM 
+--escreva a latitude, longitude e nome dos locais no arquivo pontos.csv e salve
+[  use ponto . como decimal e vírgula , como separador!!!]
+
++ O QUE JÁ É FORNECIDO COM O SCRIPT:
+- SHAPEFILE DOS ESTADOS DO BRASIL (créditos: http://www.dpi.inpe.br/Ambdata/unidades_administrativas.php)
+- LEGENDA DE REFLETIVIDADE (printei do redemet)
+
 -------------------------------------------------------------------------------------
 
 PROBLEMAS CONHECIDOS NA VERSÃO 1:
-- NORMALMENTE MENOS DA METADE DOS HORÁRIOS SOLICITADOS É RETORNADA;
+- NORMALMENTE MENOS DA METADE DOS HORÁRIOS SOLICITADOS É RETORNADA; <- não cabe a mim
 - DEMORA PARA FORMAR A ANIMAÇÃO;
 - AINDA NÃO FAZ LIMPEZA AUTOMÁTICA DA PASTA 'TEMPORÁRIOS';
 - EXECUÇÃO MUITO VERBOSA (?) (E TA ERRADO?);
