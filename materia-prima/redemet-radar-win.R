@@ -4,15 +4,19 @@
 # feito com carinho por Danilo Siden
 # Maio de 2022
 
+# informe abaixo o caminho da pasta "materia-prima":
+
+setwd("C:/ insira aqui o caminho ate a pasta /materia-prima/")
+
+
+# NÃO ALTERAR A PARTIR DESTA LINHA
+################################################################################
+
 # nova versão de 2023: substitui o pacote aposentado rgdal
 # pelo seu sucessor, sf
-
-# informe abaixo uma pasta de trabalho permanente e descomente a linha:
-#setwd("C:/.../materia-prima")
+# reduziu o tamanho das imagens e introduziu correcao para longitude no raio
 
 rm(list = ls())
-
-################################################################################
 
 pacotes_necessarios <- c("rjson", "httr", "ggplot2", "grid", "sf", "png", "magick")
 for(i in pacotes_necessarios){
@@ -34,18 +38,23 @@ if(!(sum(pacotes_necessarios %in% (.packages()))==length(pacotes_necessarios))){
 }
 
 # certificar-se da pasta de trabalho
-while(strsplit(getwd(), split = "/")[[1]][length(strsplit(getwd(), split = "/")[[1]])]!="materia-prima"){
+while(strsplit(getwd(), split = "/")[[1]][length(strsplit(getwd(), split = "/")[[1]])] != "materia-prima"){
   cat("\n\tPasta de trabalho incorreta\n\tEscreva o caminho completo ate .../materia-prima:\n")
   setwd(readline())
+}
+
+# converter grau de longitude em km em funcao da latitude em graus
+LON_KM <- function(latitude){
+  # presumindo raio da terra 40.075 Km
+  40075*cos(latitude*pi/180)/360
 }
 
 # Importar os shapefiles e imagens necessárias
 pontos <- read.csv("pontos.csv")
 EstadosBR <- read_sf(dsn = sprintf("%s/EstadosBR_IBGE_LLWGS84.shp", getwd()))
 legenda <- sprintf("%s/legenda_dBz.png", getwd())
-# Ler os pngs e transformar em grobs
+# carregar legenda
 legenda <- readPNG(source = legenda)
-legenda <- rasterGrob(legenda)
 
 # largura e altura na imagem em polegadas
 largura <- 8
@@ -252,10 +261,9 @@ if(resposta$status==TRUE){
                         quiet = TRUE,
                         mode = 'wb')
           
-          # carregar imagem e transformar em grob
+          # carregar imagem
           imagemradar <- sprintf("%s/temporarios/radar.png", getwd())
           imagemradar <- readPNG(source = imagemradar)
-          imagemradar <- rasterGrob(imagemradar)
           
         }else{  # e se for nulo?
           stop("Imagem indisponível")
@@ -281,7 +289,7 @@ if(animar==1){ # plot de imagem estática
     # círculos dos raios:
     # 1 grau ~= 111 Km
     annotate("path",
-             x=lon.cent+raio/111*cos(seq(0,2*pi,length.out=100)),
+             x=lon.cent+raio/LON_KM(lat.cent)*cos(seq(0,2*pi,length.out=100)),
              y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
              colour = "gray",
              linewidth = 0.5
@@ -312,8 +320,7 @@ if(animar==1){ # plot de imagem estática
               vjust = -0.5
     )+
     # imagem dos ecos:
-    #carregamento dos endereços do dataframe e conversão dos pngs
-    annotation_custom(imagemradar,
+    annotation_raster(imagemradar,
                       xmin = long.min,
                       xmax = long.max,
                       ymin = lat.min,
@@ -324,13 +331,13 @@ if(animar==1){ # plot de imagem estática
     # depende do raio
     {
       if(raio==400){
-        annotation_custom(legenda,
+        annotation_custom(rasterGrob(legenda),
                           xmin = long.max-2.31,
                           xmax = long.max+0.37,
                           ymin = lat.min-0.55,
                           ymax = lat.min+0.67)
       }else{
-        annotation_custom(legenda,
+        annotation_custom(rasterGrob(legenda),
                           xmin = long.max-1.4,
                           xmax = long.max+0.24,
                           ymin = lat.min-0.35,
@@ -387,7 +394,7 @@ if(animar==1){ # plot de imagem estática
       # círculos dos raios:
       # 1 grau ~= 111 Km
       annotate("path",
-               x=lon.cent+raio/111*cos(seq(0,2*pi,length.out=100)),
+               x=lon.cent+raio/LON_KM(lat.cent)*cos(seq(0,2*pi,length.out=100)),
                y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
                colour = "gray",
                linewidth = 0.5
@@ -418,7 +425,7 @@ if(animar==1){ # plot de imagem estática
                     vjust = -0.5
       )+
       # imagem dos ecos:
-      annotation_custom(rasterGrob(readPNG(eco.frame$png[A])),
+      annotation_raster(readPNG(eco.frame$png[A]),
                         xmin = long.min,
                         xmax = long.max,
                         ymin = lat.min,
@@ -428,13 +435,13 @@ if(animar==1){ # plot de imagem estática
       # depende do raio
       {
         if(raio==400){
-          annotation_custom(legenda,
-                            xmin = long.max-1.4,
-                            xmax = long.max+0.24,
-                            ymin = lat.min-0.35,
-                            ymax = lat.min+0.45)
+          annotation_custom(rasterGrob(legenda),
+                            xmin = long.max-2.31,
+                            xmax = long.max+0.37,
+                            ymin = lat.min-0.55,
+                            ymax = lat.min+0.67)
         }else{
-          annotation_custom(legenda,
+          annotation_custom(rasterGrob(legenda),
                             xmin = long.max-1.4,
                             xmax = long.max+0.24,
                             ymin = lat.min-0.35,
