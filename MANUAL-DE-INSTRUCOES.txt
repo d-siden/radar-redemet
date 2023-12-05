@@ -1,8 +1,27 @@
 -------------------------------------------------------------------------------------
-MANUAL DE INSTRUÇÕES
+MANUAL DE INSTRUÇÕES (VERSÃO SHINY)
+
+DO QUE VOCÊ PRECISA?
+- R (VERSÃO 4.3, 4.2 OU 4.1)
+-SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
+--cole a chave em chave-redemet.txt e salve
+
+Abra o console R e execute
+>runApp('app.R')
+OU
+Abra e execute o arquivo "app.R" no Rstudio
+
+Como destacar pontos de interesse na imagem?
+--insira a latitude, longitude e nome dos pontos de interesse num arquivo .csv
+[  use ponto . como decimal e vírgula , como separador!!!]
+--haverá uma aba na página para fazer upload desse arquivo
+--na dúvida, o arquivo fornecido "pontos.csv" serve de exemplo
+
+-------------------------------------------------------------------------------------
+MANUAL DE INSTRUÇÕES (VERSÃO EM LINHAS DE COMANDO)
 
 A execução perfeita do programa consiste em:
- 1 Executar o arquivo redemer-radar-win.R
+ 1 Executar o arquivo redemet-radar-win.R
  2 Responder o que ele pedir
  3 Aguardar a mensagem "Fim"
  4 Abrir a pasta resultados e conferir as imagens
