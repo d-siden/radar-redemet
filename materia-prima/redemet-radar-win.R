@@ -264,7 +264,7 @@ if(resposta$status==TRUE){
           # carregar imagem
           imagemradar <- sprintf("%s/temporarios/radar.png", getwd())
           imagemradar <- readPNG(source = imagemradar)
-          
+          break
         }else{  # e se for nulo?
           stop("Imagem indisponível")
           break
