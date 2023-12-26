@@ -7,7 +7,7 @@ DO QUE VOCÊ PRECISA?
 --cole a chave em chave-redemet.txt e salve
 
 Abra o console R e execute
->runApp('app.R')
+> shiny::runApp('app.R')
 OU
 Abra e execute o arquivo "app.R" no Rstudio
 
