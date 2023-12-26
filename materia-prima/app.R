@@ -249,19 +249,6 @@ ui <- fluidPage(
   
   sidebarLayout(
     sidebarPanel(
-      textInput(inputId = "chave", label = "Chave redemet",
-                value = readLines("chave-redemet.txt"),
-                placeholder =  "Cole sua chave aqui",
-                width = "400px"),
-      
-      selectInput(inputId = "produto", label = "Produto", width = "180px",
-                  choices = list("MaxCappi"="maxcappi",
-                                 "CAPPI 3 Km"="03km",
-                                 "CAPPI 5 Km"="05km",
-                                 "CAPPI 7 Km"="07km",
-                                 "CAPPI 10 Km"="10km"),
-                  selected = "MaxCappi", multiple = F),
-      
       selectInput(inputId = "radar", label = "Radar",
                   width = "330px",
                   choices = list(`Norte`=list("Belém/PA"="be", "Boa Vista/RR"="bv", "Cruzeiro do Sul/AC"="cz", "Macapá/AP"="mq",
@@ -272,13 +259,23 @@ ui <- fluidPage(
                                  `Sudeste`=list("Almenara/MG"="al", "Pico do Couto/RJ"="pc", "Santa Teresa/ES"="st",
                                                 "São Francisco/MG"="sf", "São Roque/SP"="sr", "Três Marias/MG"="tm"),
                                  `Sul`=list("Canguçu/RS"="cn", "Morro da Igreja/SC"="mi", "Santiago/RS"="sg")),
+                  selected = "mo",
                   multiple = F),
       
+      selectInput(inputId = "produto", label = "Produto", width = "180px",
+                  choices = list("MaxCappi"="maxcappi",
+                                 "CAPPI 3 Km"="03km",
+                                 "CAPPI 5 Km"="05km",
+                                 "CAPPI 7 Km"="07km",
+                                 "CAPPI 10 Km"="10km"),
+                  selected = "MaxCappi", multiple = F),
+      
       dateInput(inputId = "data", label = "Data", min = "2017-01-01",
-                format = "yyyy-mm-dd", autoclose = T, value = "2023-11-01",
+                format = "yyyy-mm-dd", autoclose = T, value = Sys.Date(),
                 language = "pt-BR", width = "180px"),
       
-      selectInput(inputId = "hora", label = "Hora", width = "120px",
+      selectInput(inputId = "hora", label = "Hora (UTC)", width = "120px",
+                  selected = strsplit(strsplit(strftime(Sys.time(), tz = "UTC"), " ")[[1]][2], ":")[[1]][1],
                   choices = list("00:00"="00", "01:00"="01", "02:00"="02",
                                  "03:00"="03", "04:00"="04", "05:00"="05",
                                  "06:00"="06", "07:00"="07", "08:00"="08",
@@ -311,11 +308,19 @@ ui <- fluidPage(
                     multiple = F, accept = ".csv", buttonLabel = "Selecionar",
                     placeholder = "formato CSV"),
           tableOutput("pontos")
+        ),
+        tabPanel(
+          title = "Chave",
+          fluidRow(
+            textInput(inputId = "chave", label = "Chave em uso",
+                      value = readLines("chave-redemet.txt"),
+                      placeholder =  "Cole sua chave aqui",
+                      width = "420px")
+          )
         )
       )
     )
   )
-
 )
 
 server <- function(input, output, session) {
@@ -370,7 +375,7 @@ server <- function(input, output, session) {
     },
     contentType = "image/png"
   )
-
+  
 }
 
 shinyApp(ui, server)
