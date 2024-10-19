@@ -1,11 +1,16 @@
 -------------------------------------------------------------------------------------
 MANUAL DE INSTRUÇÕES
 
+I - VERSÃO CLI ("redemet-radar-win.R")
 A execução perfeita do programa consiste em:
  1 Executar o arquivo .R
  2 Responder o que ele pedir
  3 Aguardar a mensagem "Fim"
  4 Abrir a pasta resultados e conferir as imagens
+
+II - VERSÃO GUI/WEB ("app.R")
+ 1 Instale o pacote "Shiny"
+ 2 Execute o app com > shiny::runApp("app.R")
 
 DO QUE VOCÊ PRECISA?
 
@@ -13,10 +18,11 @@ DO QUE VOCÊ PRECISA?
 -SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
 --cole a chave em chave.txt e salve
 
-(opcional):
--PONTOS PARA DESTACAR NA IMAGEM 
---informe latitude, longitude e nome dos pontos em pontos.csv e salve
-[ . decimal e , separador!!!]
+(opcionalmente):
+	-RStudio pode ser de grande ajuda para executar o app.R e instalar o pacote "png"
+	-PONTOS PARA DESTACAR NA IMAGEM 
+	--informe latitude, longitude e nome dos pontos em pontos.csv e salve
+	[ . decimal e , separador!!!]
 
 + O QUE JÁ É FORNECIDO COM O SCRIPT:
 - **NOVO** SHAPEFILE DOS ESTADOS DO BRASIL (baseado no IBGE-2022)
@@ -24,22 +30,26 @@ DO QUE VOCÊ PRECISA?
 
 O QUE ELE RETORNA?
 -CADA IMAGEM DENTRO DO PERÍODO FORNECIDO EM FORMATO .png, OU
--(01) UM .gif, SE FOI SOLICITADO MAIS DE UM HORÁRIO DE VARREDURA,
+-UM .gif, SE FOI SOLICITADO MAIS DE UM HORÁRIO DE VARREDURA (somente na versão CLI),
 -SERÃO SALVOS NA PASTA "resultados".
 
 PARA ISSO É NECESSÁRIO QUE OS ARQUIVOS ESTEJAM DISPOSTOS NA SEGUINTE HIERARQUIA:
 
 [materia-prima]
-	-> shapefile(EstadosBR_IBGE_LLWGS84.dbf + .prj + .shp + .shx)
+	-> [estados_br_2022_l]
+		-> estados_br_2022_l_edit(.shp, .prj...)
 	-> legenda(.png)
 	-> pontos(.csv)
 	-> chave(.txt)
+	-> app(.R)
 	-> redemet-radar-win(.R)
 	-> [temporarios]
 		-> (.png)
 	-> [resultados]
 		-> (.png, .gif)
 
+-------------------------------------------------------------------------------------
+Repositório: https://github.com/d-siden/radar-redemet/
 -------------------------------------------------------------------------------------
 
 PROBLEMAS CONHECIDOS NA VERSÃO 1:
@@ -51,6 +61,10 @@ PROBLEMAS CONHECIDOS NA VERSÃO 1:
 
 RESOLVIDOS:
 - DOIS-PONTOS NO NOME DA IMAGEM PODEM TRAVAR ALGUNS SISTEMAS DE ARQUIVOS (SMARTPHONES ANDROID, WINDOWS); {resolvido em 2023 oh demora}
+	V2
+- ARQUIVOS TEMPORÁRIOS (apenas no APP.R)
+- EXECUÇÃO MENOS VERBOSA
+- BORDAS COM MENOS VARIAÇÃO
 
 -------------------------------------------------------------------------------------
 
