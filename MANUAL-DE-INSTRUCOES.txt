@@ -1,36 +1,26 @@
 -------------------------------------------------------------------------------------
-MANUAL DE INSTRUÇÕES (VERSÃO SHINY)
-
-DO QUE VOCÊ PRECISA?
-- R (VERSÃO 4.3, 4.2 OU 4.1)
--SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
---cole a chave em chave-redemet.txt e salve
-
-Abra o console R e execute
-> shiny::runApp('app.R')
-OU
-Abra e execute o arquivo "app.R" no Rstudio
-
-Como destacar pontos de interesse na imagem?
---insira a latitude, longitude e nome dos pontos de interesse num arquivo .csv
-[  use ponto . como decimal e vírgula , como separador!!!]
---haverá uma aba na página para fazer upload desse arquivo
---na dúvida, o arquivo fornecido "pontos.csv" serve de exemplo
-
--------------------------------------------------------------------------------------
-MANUAL DE INSTRUÇÕES (VERSÃO EM LINHAS DE COMANDO)
+MANUAL DE INSTRUÇÕES
 
 A execução perfeita do programa consiste em:
- 1 Executar o arquivo redemet-radar-win.R
+ 1 Executar o arquivo .R
  2 Responder o que ele pedir
  3 Aguardar a mensagem "Fim"
  4 Abrir a pasta resultados e conferir as imagens
 
 DO QUE VOCÊ PRECISA?
+
 - R (VERSÃO 4.3, 4.2 OU 4.1)
 -SUA CHAVE REDEMET, (cadastre-se em https://www.atd-1.com/cadastro-api/)
---cole a chave em chave-redemet.txt e salve
--editar apenas a linha 9 com o caminho da pasta "materia-prima"
+--cole a chave em chave.txt e salve
+
+(opcional):
+-PONTOS PARA DESTACAR NA IMAGEM 
+--informe latitude, longitude e nome dos pontos em pontos.csv e salve
+[ . decimal e , separador!!!]
+
++ O QUE JÁ É FORNECIDO COM O SCRIPT:
+- **NOVO** SHAPEFILE DOS ESTADOS DO BRASIL (baseado no IBGE-2022)
+- LEGENDA DE REFLETIVIDADE (printei do redemet)
 
 O QUE ELE RETORNA?
 -CADA IMAGEM DENTRO DO PERÍODO FORNECIDO EM FORMATO .png, OU
@@ -43,26 +33,17 @@ PARA ISSO É NECESSÁRIO QUE OS ARQUIVOS ESTEJAM DISPOSTOS NA SEGUINTE HIERARQUI
 	-> shapefile(EstadosBR_IBGE_LLWGS84.dbf + .prj + .shp + .shx)
 	-> legenda(.png)
 	-> pontos(.csv)
-	-> chave-redemet(.txt)
+	-> chave(.txt)
 	-> redemet-radar-win(.R)
 	-> [temporarios]
 		-> (.png)
 	-> [resultados]
 		-> (.png, .gif)
 
-(opcional):
--LOCAIS PARA DESTACAR NA IMAGEM 
---escreva a latitude, longitude e nome dos locais no arquivo pontos.csv e salve
-[  use ponto . como decimal e vírgula , como separador!!!]
-
-+ O QUE JÁ É FORNECIDO COM O SCRIPT:
-- SHAPEFILE DOS ESTADOS DO BRASIL (créditos: http://www.dpi.inpe.br/Ambdata/unidades_administrativas.php)
-- LEGENDA DE REFLETIVIDADE (printei do redemet)
-
 -------------------------------------------------------------------------------------
 
 PROBLEMAS CONHECIDOS NA VERSÃO 1:
-- NORMALMENTE MENOS DA METADE DOS HORÁRIOS SOLICITADOS É RETORNADA; <- não cabe a mim
+- NORMALMENTE MENOS DA METADE DOS HORÁRIOS SOLICITADOS É RETORNADA;
 - DEMORA PARA FORMAR A ANIMAÇÃO;
 - AINDA NÃO FAZ LIMPEZA AUTOMÁTICA DA PASTA 'TEMPORÁRIOS';
 - EXECUÇÃO MUITO VERBOSA (?) (E TA ERRADO?);
@@ -77,12 +58,14 @@ COMO ELE FUNCIONA?
 
 FAZ O DOWNLOAD DA(S) IMAGEM(NS) CORRESPONDENTE(S) AO LOCAL DESEJADO NA PASTA "temporarios";
 
-PLOTA ESSA IMAGEM POR CIMA DO SHAPEFILE CONTENDO AS DIVISAS DOS ESTADOS DO BRASIL "EstadosBR_IBGE_LLWGS84";
+PLOTA ESSA IMAGEM POR CIMA DO SHAPEFILE CONTENDO AS DIVISAS DOS ESTADOS DO BRASIL "estados_br_2022_l_edit";
 
 PLOTA A LEGENDA DE REFLETIVIDADE DISPONÍVEL DO SITE EM MAIO DE 2022 "legenda_dBz.png";
 
 SALVA CADA IMAGEM INDIVIDUALMENTE, + (01) UM .gif SE FOI SOLICITADO MAIS DE UM HORÁRIO DE VARREDURA, NA PASTA "resultados".
 
+-------------------------------------------------------------------------------------
+ATUALIZAÇÃO 18 de outubro de 2024: novo shapefile baseado no IBGE-2022
 -------------------------------------------------------------------------------------
 
 Primeira rodada:
