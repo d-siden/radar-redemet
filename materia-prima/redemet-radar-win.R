@@ -6,11 +6,13 @@
 
 # informe abaixo o caminho da pasta "materia-prima":
 
-setwd("C:/ insira aqui o caminho ate a pasta /materia-prima/")
+setwd("C: /Caminho até a pasta /materia-prima/")
 
 
 # NÃO ALTERAR A PARTIR DESTA LINHA
 ################################################################################
+# nova versão de 2024: novo shapefile de estados do IBGE-2022
+# linhas mais finas
 
 # nova versão de 2023: substitui o pacote aposentado rgdal
 # pelo seu sucessor, sf
@@ -51,7 +53,7 @@ LON_KM <- function(latitude){
 
 # Importar os shapefiles e imagens necessárias
 pontos <- read.csv("pontos.csv")
-EstadosBR <- read_sf(dsn = sprintf("%s/EstadosBR_IBGE_LLWGS84.shp", getwd()))
+EstadosBR <- read_sf(dsn = sprintf("%s/estados_br_2022_l/estados_br_2022_l_edit.shp", getwd()))
 legenda <- sprintf("%s/legenda_dBz.png", getwd())
 # carregar legenda
 legenda <- readPNG(source = legenda)
@@ -292,7 +294,7 @@ if(animar==1){ # plot de imagem estática
              x=lon.cent+raio/LON_KM(lat.cent)*cos(seq(0,2*pi,length.out=100)),
              y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
              colour = "gray",
-             linewidth = 0.5
+             linewidth = 0.4
     )+
     # cruz do radar
     geom_point(data=as.data.frame(1),
@@ -304,10 +306,8 @@ if(animar==1){ # plot de imagem estática
     )+
     geom_sf(data = EstadosBR,
             fill = NA,
-              #aes(x=long, y=lat, group = group),
-              #alpha = 0.5,
-              #color = "gray15",
-              size = 0.5
+            colour = "black",
+            linewidth = 0.2
     )+
     geom_point(data = pontos,
                aes(x=lon, y=lat),
@@ -397,7 +397,7 @@ if(animar==1){ # plot de imagem estática
                x=lon.cent+raio/LON_KM(lat.cent)*cos(seq(0,2*pi,length.out=100)),
                y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
                colour = "gray",
-               linewidth = 0.5
+               linewidth = 0.4
       )+
       # cruz do radar
       geom_point(data=as.data.frame(1),
@@ -409,10 +409,8 @@ if(animar==1){ # plot de imagem estática
       )+
       geom_sf(data = EstadosBR,
               fill = NA,
-                #aes(x=long, y=lat, group = group),
-                #alpha = 0.5,
-                #color = "gray15",
-                size = 0.5
+              colour = "black",
+              linewidth = 0.2
       )+
       geom_point(data = pontos,
                  aes(x=lon, y=lat),

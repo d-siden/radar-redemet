@@ -93,15 +93,17 @@ Solicitar_API <- function(produto, chave, data, hora, radar){
                          produto <- resposta$data$tipo
                          horario <- resposta$data$radar[[1]][[r]]$data
                          
-                         # acessar a imagem e salvar na pasta 'temporarios'
+                         # acessar a imagem e salvar na pasta 'temporarios', em arquivo temporario
+                         temporarios <- tempfile(tmpdir = sprintf("%s/temporarios", getwd()))
+                         on.exit(unlink(temporarios))
                          download.file(url = resposta$data$radar[[1]][[r]]$path,
-                                       destfile = sprintf("%s/temporarios/radar.png", getwd()),
+                                       destfile = temporarios,
                                        method = 'auto',
                                        quiet = TRUE,
                                        mode = 'wb')
                          
                          # carregar imagem
-                         imagemradar <- sprintf("%s/temporarios/radar.png", getwd())
+                         imagemradar <- temporarios
                          imagemradar <- readPNG(source = imagemradar)
                          
                          retorno <- list(
@@ -144,7 +146,7 @@ Montar_Imagem <- function(lon.cent, lat.cent, raio, nomeradar, produto, EstadosB
                             x=lon.cent+raio/LON_KM(lat.cent)*cos(seq(0,2*pi,length.out=100)),
                             y=lat.cent+raio/111*sin(seq(0,2*pi,length.out=100)),
                             colour = "gray",
-                            linewidth = 0.5
+                            linewidth = 0.4
                    )+
                    # cruz do radar
                    geom_point(data=as.data.frame("cruz"=c(1),
@@ -155,9 +157,11 @@ Montar_Imagem <- function(lon.cent, lat.cent, raio, nomeradar, produto, EstadosB
                               shape = 3,
                               color = 'gray'
                    )+
+                   # estados
                    geom_sf(data = EstadosBR,
                            fill = NA,
-                           size = 0.5
+                           colour = 'black',
+                           linewidth = 0.2
                    )+
                    # imagem dos ecos:
                    annotation_raster(imagemradar,
@@ -217,8 +221,8 @@ Montar_Imagem <- function(lon.cent, lat.cent, raio, nomeradar, produto, EstadosB
                          plot.title = element_text(face = "bold",
                                                    hjust = 0.5)
                    )+
-                   labs(x = "Longitude (°)",
-                        y = "Latitude (°)",
+                   labs(x = "Longitude",
+                        y = "Latitude",
                         title = sprintf("%s    %s UTC", nomeradar, gsub("_",":",horario)),
                         subtitle = sprintf("Produto CAPPI: %s    Raio: %s Km    ", produto, raio)
                    )
@@ -236,7 +240,7 @@ Montar_Imagem <- function(lon.cent, lat.cent, raio, nomeradar, produto, EstadosB
 
 # Importar os shapefiles e imagens necessárias
 
-EstadosBR <- read_sf(dsn = sprintf("%s/EstadosBR_IBGE_LLWGS84.shp", getwd()))
+EstadosBR <- read_sf(dsn = sprintf("%s/estados_br_2022_l/estados_br_2022_l_edit.shp", getwd()))
 legenda <- sprintf("%s/legenda_dBz.png", getwd())
 # carregar legenda
 legenda <- readPNG(source = legenda)
